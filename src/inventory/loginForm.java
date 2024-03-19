@@ -6,6 +6,9 @@
 package inventory;
 
 import admin.admindashboard;
+import config.dbConnector;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +24,19 @@ public class loginForm extends javax.swing.JFrame {
         initComponents();
     }
 
+    public static boolean loginAcc(String username, String password){
+        dbConnector connector = new dbConnector();
+        try{
+            String query = "SELECT * FROM tbl_user  WHERE u_username = '" + username + "' AND u_password = '" + password + "'";
+            ResultSet resultSet = connector.getData(query);
+            return resultSet.next();
+        }catch (SQLException ex) {
+            return false;
+        }
+
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,8 +51,8 @@ public class loginForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
-        password = new javax.swing.JTextField();
+        user = new javax.swing.JTextField();
+        pass = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -99,8 +115,8 @@ public class loginForm extends javax.swing.JFrame {
                         .addGap(34, 34, 34)
                         .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                        .addComponent(username)))
+                        .addComponent(pass, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                        .addComponent(user)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(231, Short.MAX_VALUE)
@@ -114,11 +130,11 @@ public class loginForm extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -144,23 +160,19 @@ public class loginForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String acc = "Admin";
-        String user = "Kyle";
-        String pass = "1234";
+ 
         
-        if(user.equals(username.getText())&&pass.equals(password.getText())){
-        admindashboard ads = new admindashboard();
-        JOptionPane.showMessageDialog(null,"Log in Success");
-        ads.setVisible(true);
-        this.dispose();
-        
-        
-        }else{
-            
-            JOptionPane.showMessageDialog(null,"invalid account");
-        }
-        
-        
+        if(loginAcc(user.getText(),pass.getText())){
+     
+     JOptionPane.showMessageDialog(null,"log in success");
+     admindashboard ads = new admindashboard();
+     ads.setVisible(true);
+     this.dispose();
+     
+ }else{
+     JOptionPane.showMessageDialog(null,"log in failed");
+     
+ }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -207,7 +219,7 @@ public class loginForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField password;
-    private javax.swing.JTextField username;
+    private javax.swing.JTextField pass;
+    private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
 }
