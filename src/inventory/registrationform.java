@@ -6,6 +6,8 @@
 package inventory;
 
 import config.dbConnector;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,6 +22,46 @@ public class registrationform extends javax.swing.JFrame {
     public registrationform() {
         initComponents();
     }
+     public static String uemail,usname;
+    
+    public boolean duplicateCheck(){
+        
+        dbConnector dbc = new dbConnector();
+        
+        try{ 
+             String query = "SELECT * FROM tbl_user  WHERE u_username = '" + us.getText() + "' OR u_email = '" + em.getText() + "'";
+            ResultSet resultSet = dbc.getData(query);
+            
+            if(resultSet.next()){
+                
+                uemail = resultSet.getString("u_email");
+                
+                if(uemail.equals(em.getText())){
+                    JOptionPane.showMessageDialog(null,"Email is already use !");
+                    em.setText("");
+                }
+                
+                usname = resultSet.getString("u_username");
+                
+                if(usname.equals(us.getText())){
+                    
+                    JOptionPane.showMessageDialog(null,"Username is already use !");
+                    us.setText("");
+                }
+                return true;
+            }else{
+                return false;
+            }
+       
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+            return false;
+            
+             
+            
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -166,12 +208,33 @@ public class registrationform extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       dbConnector dbc = new dbConnector();
+      
+          if(fn.getText().isEmpty() || ln.getText().isEmpty()||em.getText().isEmpty()||us.getText().isEmpty()
+               ||ps.getText().isEmpty()){
+           JOptionPane.showMessageDialog(null,"All fields are required!");
+           
+       
+           
+       }else if(ps.getText().length()<8){
+            JOptionPane.showMessageDialog(null,"Password should be above 8!");
+            ps.setText("");    
+       }else if(duplicateCheck()){
+           System.out.println("Duplicate Exist");
+       }
+       else{
+               
+            
+        
+        
+        dbConnector dbc = new dbConnector();
        if(dbc.insertData("INSERT INTO tbl_user"
                +"(u_fname,u_lname,u_email,u_username,u_password,u_type,u_status)"
                + "VALUES('"+fn.getText()+"','"+ln.getText()+"','"+em.getText()+"','"+us.getText()+"','"+ps.getText()+"','"+ust.getSelectedItem()+"','Pending') ")){
        
            JOptionPane.showMessageDialog(null,"inserted successfully");
+           loginForm in = new loginForm();
+        in.setVisible(true);
+        this.dispose();
        }else{
            JOptionPane.showMessageDialog(null,"inserted error");
        }
@@ -196,7 +259,7 @@ public class registrationform extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.fnogger(registrationform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(registrationform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(registrationform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {

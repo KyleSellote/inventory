@@ -10,6 +10,7 @@ import config.dbConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import user.userdashboard;
 
 /**
  *
@@ -23,13 +24,22 @@ public class loginForm extends javax.swing.JFrame {
     public loginForm() {
         initComponents();
     }
-
+     
+    static String status;
+    static String type;
     public static boolean loginAcc(String username, String password){
         dbConnector connector = new dbConnector();
         try{
             String query = "SELECT * FROM tbl_user  WHERE u_username = '" + username + "' AND u_password = '" + password + "'";
             ResultSet resultSet = connector.getData(query);
-            return resultSet.next();
+            if(resultSet.next()){
+                status = resultSet.getString("u_status");
+                type = resultSet.getString("u_type");
+                return true;
+            }else{
+                return false;
+            }
+            
         }catch (SQLException ex) {
             return false;
         }
@@ -168,13 +178,23 @@ public class loginForm extends javax.swing.JFrame {
  
         
         if(loginAcc(user.getText(),pass.getText())){
-     
-     JOptionPane.showMessageDialog(null,"log in success");
-     admindashboard ads = new admindashboard();
+        if(!status.equals("Active")){ 
+        JOptionPane.showMessageDialog(null,"In Active Account");
+        user.setText("");
+     pass.setText("");
+     }else{
+         JOptionPane.showMessageDialog(null,"log in success");
+         if(type.equals("Admin")){
+           admindashboard ads = new admindashboard();
      ads.setVisible(true);
-     this.dispose();
-     
- }else{
+     this.dispose();  
+         }else if(type.equals("User")){
+               userdashboard uds = new userdashboard();
+     uds.setVisible(true);
+     this.dispose(); 
+         }
+         }  
+     }else{
      JOptionPane.showMessageDialog(null,"log in failed");
      
  }

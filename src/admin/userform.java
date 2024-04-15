@@ -5,21 +5,40 @@
  */
 package admin;
 
+import config.dbConnector;
 import inventory.loginForm;
 import static inventory.loginForm.loginAcc;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
  * @author SCC-COLLEGE
  */
-public class admindashboard extends javax.swing.JFrame {
+public class userform extends javax.swing.JFrame {
 
     /**
      * Creates new form admindashboard
      */
-    public admindashboard() {
+    public userform() {
         initComponents();
+        displayData();
+    }
+    
+     public void displayData(){
+        try{
+            dbConnector dbc = new dbConnector();
+            ResultSet rs = dbc.getData("SELECT id,u_fname,u_email,u_type,u_status FROM tbl_user");
+            userTable.setModel(DbUtils.resultSetToTableModel(rs));
+             rs.close();
+        }catch(SQLException ex){
+            System.out.println("Errors: "+ex.getMessage());
+        
+        }
+        
+    
     }
 
     /**
@@ -53,14 +72,14 @@ public class admindashboard extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        Back = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        users = new javax.swing.JPanel();
+        userForm = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        userTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -234,7 +253,7 @@ public class admindashboard extends javax.swing.JFrame {
         );
 
         jPanel5.add(jPanel11);
-        jPanel11.setBounds(0, 0, 600, 100);
+        jPanel11.setBounds(0, 0, 600, 0);
 
         jPanel12.setBackground(new java.awt.Color(102, 255, 204));
 
@@ -274,61 +293,61 @@ public class admindashboard extends javax.swing.JFrame {
         jPanel14.setBackground(new java.awt.Color(0, 153, 102));
         jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel9.setText("log out");
-        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("Users Form ");
+        jPanel14.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 14, 170, 40));
+
+        Back.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Back.setText("Back");
+        Back.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel9MouseClicked(evt);
+                BackMouseClicked(evt);
             }
         });
-        jPanel14.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(461, 48, -1, -1));
-
-        jLabel10.setText("Admin Dashboard");
-        jPanel14.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
+        jPanel14.add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 90, -1));
 
         jPanel1.add(jPanel14);
-        jPanel14.setBounds(0, 0, 600, 100);
+        jPanel14.setBounds(0, 0, 600, 54);
 
         jPanel15.setBackground(new java.awt.Color(153, 255, 153));
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel11.setText("user");
-        jPanel15.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 130, -1, -1));
-
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-admin-50.png"))); // NOI18N
-        jPanel15.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 100, 100));
-
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("Admin");
-        jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 90, 90));
-
-        users.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                usersMouseClicked(evt);
-            }
-        });
-
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-users-96.png"))); // NOI18N
 
-        javax.swing.GroupLayout usersLayout = new javax.swing.GroupLayout(users);
-        users.setLayout(usersLayout);
-        usersLayout.setHorizontalGroup(
-            usersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(usersLayout.createSequentialGroup()
-                .addContainerGap()
+        jLabel11.setText("user");
+
+        javax.swing.GroupLayout userFormLayout = new javax.swing.GroupLayout(userForm);
+        userForm.setLayout(userFormLayout);
+        userFormLayout.setHorizontalGroup(
+            userFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userFormLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(userFormLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jLabel11)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        usersLayout.setVerticalGroup(
-            usersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(usersLayout.createSequentialGroup()
+        userFormLayout.setVerticalGroup(
+            userFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userFormLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 50, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jLabel11)
+                .addContainerGap())
         );
 
-        jPanel15.add(users, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 120, 140));
+        jPanel15.add(userForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 120, 140));
+
+        jScrollPane1.setViewportView(userTable);
+
+        jPanel15.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 400, 270));
 
         jPanel1.add(jPanel15);
-        jPanel15.setBounds(0, 100, 600, 280);
+        jPanel15.setBounds(0, 50, 600, 330);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -352,18 +371,11 @@ public class admindashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel4MouseClicked
 
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-       loginForm log = new loginForm();
-       log.setVisible(true);
-       this.dispose();
-       
-    }//GEN-LAST:event_jLabel9MouseClicked
-
-    private void usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersMouseClicked
-        userform us = new userform();
-        us.setVisible(true);
+    private void BackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackMouseClicked
+        admindashboard ad = new admindashboard();
+        ad.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_usersMouseClicked
+    }//GEN-LAST:event_BackMouseClicked
 
     /**
      * @param args the command line arguments
@@ -382,31 +394,33 @@ public class admindashboard extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(admindashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(admindashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(admindashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(admindashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userform.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new admindashboard().setVisible(true);
+                new userform().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Back;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -414,7 +428,6 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -430,6 +443,8 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPanel users;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel userForm;
+    private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }
