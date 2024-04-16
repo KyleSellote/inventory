@@ -43,6 +43,7 @@ public class userdashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        uname = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -136,8 +137,12 @@ public class userdashboard extends javax.swing.JFrame {
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-users-96.png"))); // NOI18N
         jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 89, 78));
 
+        uname.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        uname.setText("user");
+        jPanel7.add(uname, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 40, 30));
+
         jPanel1.add(jPanel7);
-        jPanel7.setBounds(0, 100, 109, 250);
+        jPanel7.setBounds(0, 100, 99, 250);
 
         jPanel8.setBackground(new java.awt.Color(153, 255, 153));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -161,7 +166,7 @@ public class userdashboard extends javax.swing.JFrame {
         jPanel9.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 30, 50, 40));
 
         jPanel1.add(jPanel9);
-        jPanel9.setBounds(0, 0, 590, 100);
+        jPanel9.setBounds(0, 0, 590, 75);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -244,5 +249,6 @@ public class userdashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    public javax.swing.JLabel uname;
     // End of variables declaration//GEN-END:variables
 }

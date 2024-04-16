@@ -27,6 +27,8 @@ public class loginForm extends javax.swing.JFrame {
      
     static String status;
     static String type;
+    static String accname;
+    
     public static boolean loginAcc(String username, String password){
         dbConnector connector = new dbConnector();
         try{
@@ -35,6 +37,8 @@ public class loginForm extends javax.swing.JFrame {
             if(resultSet.next()){
                 status = resultSet.getString("u_status");
                 type = resultSet.getString("u_type");
+                accname = resultSet.getString("u_fname");
+                
                 return true;
             }else{
                 return false;
@@ -181,22 +185,24 @@ public class loginForm extends javax.swing.JFrame {
         if(!status.equals("Active")){ 
         JOptionPane.showMessageDialog(null,"In Active Account");
         user.setText("");
-     pass.setText("");
+     
      }else{
          JOptionPane.showMessageDialog(null,"log in success");
          if(type.equals("Admin")){
            admindashboard ads = new admindashboard();
+           ads.uname.setText(""+accname);
      ads.setVisible(true);
      this.dispose();  
          }else if(type.equals("User")){
                userdashboard uds = new userdashboard();
+                uds.uname.setText(""+accname);
      uds.setVisible(true);
      this.dispose(); 
          }
          }  
      }else{
      JOptionPane.showMessageDialog(null,"log in failed");
-     
+     pass.setText("");
  }
     }//GEN-LAST:event_jButton2ActionPerformed
 

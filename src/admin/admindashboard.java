@@ -58,7 +58,7 @@ public class admindashboard extends javax.swing.JFrame {
         jPanel15 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        uname = new javax.swing.JLabel();
         users = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
 
@@ -286,7 +286,7 @@ public class admindashboard extends javax.swing.JFrame {
         jPanel14.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
 
         jPanel1.add(jPanel14);
-        jPanel14.setBounds(0, 0, 600, 100);
+        jPanel14.setBounds(0, 0, 600, 62);
 
         jPanel15.setBackground(new java.awt.Color(153, 255, 153));
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -297,9 +297,9 @@ public class admindashboard extends javax.swing.JFrame {
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-admin-50.png"))); // NOI18N
         jPanel15.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 100, 100));
 
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("Admin");
-        jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 90, 90));
+        uname.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        uname.setText("Admin");
+        jPanel15.add(uname, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 90, 90));
 
         users.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -406,7 +406,6 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -430,6 +429,7 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    public javax.swing.JLabel uname;
     private javax.swing.JPanel users;
     // End of variables declaration//GEN-END:variables
 }

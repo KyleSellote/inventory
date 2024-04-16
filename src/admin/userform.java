@@ -8,9 +8,12 @@ package admin;
 import config.dbConnector;
 import inventory.loginForm;
 import static inventory.loginForm.loginAcc;
+import static inventory.registrationform.uemail;
+import static inventory.registrationform.usname;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -26,12 +29,50 @@ public class userform extends javax.swing.JFrame {
         initComponents();
         displayData();
     }
+    public static String uemail,uname;
+     public boolean duplicateCheck(){
+        
+        dbConnector dbc = new dbConnector();
+        
+        try{ 
+             String query = "SELECT * FROM tbl_user  WHERE u_username = '" + un.getText() + "' OR u_email = '" + em.getText() + "'";
+            ResultSet resultSet = dbc.getData(query);
+            
+            if(resultSet.next()){
+                
+                uemail = resultSet.getString("u_email");
+                
+                if(uemail.equals(em.getText())){
+                    JOptionPane.showMessageDialog(null,"Email is already use !");
+                    em.setText("");
+                }
+                
+                uname = resultSet.getString("u_username");
+                
+                if(uname.equals(un.getText())){
+                    
+                    JOptionPane.showMessageDialog(null,"Username is already use !");
+                    un.setText("");
+                }
+                return true;
+            }else{
+                return false;
+            }
+       
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+            return false;
+            
+             
+            
+        }
+    }
     
      public void displayData(){
         try{
             dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT id,u_fname,u_email,u_type,u_status FROM tbl_user");
-            userTable.setModel(DbUtils.resultSetToTableModel(rs));
+            ResultSet rs = dbc.getData("SELECT u_id,u_fname,u_email,u_type,u_status FROM tbl_user");
+            userTables.setModel(DbUtils.resultSetToTableModel(rs));
              rs.close();
         }catch(SQLException ex){
             System.out.println("Errors: "+ex.getMessage());
@@ -75,11 +116,27 @@ public class userform extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         Back = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
-        userForm = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        userTable = new javax.swing.JTable();
+        userTables = new javax.swing.JTable();
+        jPanel16 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        uid = new javax.swing.JTextField();
+        fn = new javax.swing.JTextField();
+        ln = new javax.swing.JTextField();
+        em = new javax.swing.JTextField();
+        un = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        ust = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
+        ut = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        ps = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -253,7 +310,7 @@ public class userform extends javax.swing.JFrame {
         );
 
         jPanel5.add(jPanel11);
-        jPanel11.setBounds(0, 0, 600, 0);
+        jPanel11.setBounds(0, 0, 600, 100);
 
         jPanel12.setBackground(new java.awt.Color(102, 255, 204));
 
@@ -308,56 +365,95 @@ public class userform extends javax.swing.JFrame {
         jPanel14.add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 90, -1));
 
         jPanel1.add(jPanel14);
-        jPanel14.setBounds(0, 0, 600, 54);
+        jPanel14.setBounds(0, 0, 660, 54);
 
         jPanel15.setBackground(new java.awt.Color(153, 255, 153));
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-users-96.png"))); // NOI18N
+        userTables.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userTablesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(userTables);
 
-        jLabel11.setText("user");
+        jPanel15.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 330, 270));
 
-        javax.swing.GroupLayout userFormLayout = new javax.swing.GroupLayout(userForm);
-        userForm.setLayout(userFormLayout);
-        userFormLayout.setHorizontalGroup(
-            userFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userFormLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(userFormLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        userFormLayout.setVerticalGroup(
-            userFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(userFormLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jLabel11)
-                .addContainerGap())
-        );
+        jPanel16.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel15.add(userForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 120, 140));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Id");
+        jPanel16.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 60, 50, -1));
 
-        jScrollPane1.setViewportView(userTable);
+        jLabel12.setText("First Name");
+        jPanel16.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 103, -1, -1));
 
-        jPanel15.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 400, 270));
+        jLabel13.setText("Last Name");
+        jPanel16.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, -1, -1));
+
+        jLabel14.setText("Email");
+        jPanel16.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 201, -1, -1));
+
+        jLabel16.setText("Username");
+        jPanel16.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 253, -1, -1));
+        jPanel16.add(uid, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 57, 100, -1));
+        jPanel16.add(fn, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 100, 100, -1));
+        jPanel16.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 145, 100, -1));
+        jPanel16.add(em, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 198, 100, -1));
+        jPanel16.add(un, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 250, 100, -1));
+
+        jPanel15.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, -10, 270, -1));
+
+        jButton2.setText("clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel15.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, -1, -1));
+
+        jLabel17.setText("user status");
+        jPanel15.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 380, -1, -1));
+
+        ust.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Pending" }));
+        jPanel15.add(ust, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, -1, -1));
+
+        jButton1.setText("save");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel15.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 360, -1, -1));
+
+        jLabel15.setText("user type");
+        jPanel15.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, -1));
+
+        ut.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
+        jPanel15.add(ut, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 330, -1, -1));
+
+        jLabel18.setText("Password");
+        jPanel15.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, -1, 30));
+        jPanel15.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 280, 100, 30));
 
         jPanel1.add(jPanel15);
-        jPanel15.setBounds(0, 50, 600, 330);
+        jPanel15.setBounds(0, 50, 650, 450);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
         );
 
         pack();
@@ -376,6 +472,77 @@ public class userform extends javax.swing.JFrame {
         ad.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BackMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+      
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void userTablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userTablesMouseClicked
+        int rowIndex = userTables.getSelectedRow();
+        
+        
+        
+        TableModel model = userTables.getModel();
+        String id  = model.getValueAt(rowIndex,0).toString();
+        
+        dbConnector dbc = new dbConnector();
+        try{
+            ResultSet rs = dbc.getData("SELECT * FROM tbl_user  WHERE u_id = '" + id + "'");
+        if(rs.next()){
+            uid.setText(rs.getString("u_id"));
+            fn.setText(rs.getString("u_fname"));
+            ln.setText(rs.getString("u_lname"));
+            em.setText(rs.getString("u_email"));
+            un.setText(rs.getString("u_username"));
+            ps.setText(rs.getString("u_password"));
+            ut.setSelectedItem(rs.getString("u_type"));
+            ust.setSelectedItem(rs.getString("u_status"));
+        
+        }
+        
+        
+        }catch(SQLException ex){
+            System.out.println(""+ex);      
+}
+        
+        
+        
+    }//GEN-LAST:event_userTablesMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+          if(fn.getText().isEmpty() || ln.getText().isEmpty()||em.getText().isEmpty()||un.getText().isEmpty()
+            ||ps.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"All fields are required!");
+
+        }else if(ps.getText().length()<8){
+            JOptionPane.showMessageDialog(null,"Password should be above 8!");
+            ps.setText("");
+        }else if(duplicateCheck()){
+            System.out.println("Duplicate Exist");
+        }
+        else{
+
+            dbConnector dbc = new dbConnector();
+            if(dbc.insertData("INSERT INTO tbl_user"
+                +"(u_fname,u_lname,u_email,u_username,u_password,u_type,u_status)"
+                + "VALUES('"+fn.getText()+"','"+ln.getText()+"','"+em.getText()+"',"
+                        + "'"+un.getText()+"','"+ps.getText()+"','"+ust.getSelectedItem()+"','Pending') ")){
+
+            JOptionPane.showMessageDialog(null,"inserted successfully");
+            
+            displayData();
+            fn.setText("");
+            
+        }else{
+            JOptionPane.showMessageDialog(null,"inserted error");
+        }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -417,10 +584,19 @@ public class userform extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Back;
+    private javax.swing.JTextField em;
+    private javax.swing.JTextField fn;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -428,6 +604,7 @@ public class userform extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -435,6 +612,7 @@ public class userform extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -444,7 +622,12 @@ public class userform extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel userForm;
-    private javax.swing.JTable userTable;
+    private javax.swing.JTextField ln;
+    private javax.swing.JTextField ps;
+    private javax.swing.JTextField uid;
+    private javax.swing.JTextField un;
+    private javax.swing.JTable userTables;
+    private javax.swing.JComboBox<String> ust;
+    private javax.swing.JComboBox<String> ut;
     // End of variables declaration//GEN-END:variables
 }
