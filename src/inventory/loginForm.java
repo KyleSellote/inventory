@@ -33,7 +33,7 @@ public class loginForm extends javax.swing.JFrame {
     public static boolean loginAcc(String username, String password){
         dbConnector connector = new dbConnector();
         try{
-            String query = "SELECT * FROM tbl_user  WHERE u_username = '" + username + "' AND u_password = '" + password + "'";
+            String query = "SELECT * FROM tbl_user  WHERE u_username = '" + username + "'";
             ResultSet resultSet = connector.getData(query);
             if(resultSet.next()){
                 
@@ -153,7 +153,7 @@ public class loginForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
- 
+        Session sess = Session.getInstance();
         
         if(loginAcc(user.getText(),pass.getText())){
         if(!status.equals("Active")){ 
@@ -164,12 +164,16 @@ public class loginForm extends javax.swing.JFrame {
          JOptionPane.showMessageDialog(null,"log in success");
          if(type.equals("Admin")){
            admindashboard ads = new admindashboard();
-           ads.uname.setText(""+accname);
+           ads.uname.setText(""+sess.getLname());
      ads.setVisible(true);
      this.dispose();  
          }else if(type.equals("User")){
                userdashboard uds = new userdashboard();
-                uds.uname.setText(""+accname);
+               uds.id.setText(""+sess.getUid());
+                uds.uname.setText(""+sess.getLname());
+                uds.name.setText(""+sess.getFname()+" "+sess.getLname());
+                uds.email.setText(""+sess.getEmail());
+                uds.username.setText(""+sess.getUsername());
      uds.setVisible(true);
      this.dispose(); 
          }

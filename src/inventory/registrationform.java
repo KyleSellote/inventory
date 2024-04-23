@@ -6,6 +6,8 @@
 package inventory;
 
 import config.dbConnector;
+import config.passwordhasher;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -78,15 +80,17 @@ public class registrationform extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        ust = new javax.swing.JComboBox<>();
+        ut = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         fn = new javax.swing.JTextField();
         ln = new javax.swing.JTextField();
         em = new javax.swing.JTextField();
         us = new javax.swing.JTextField();
-        ps = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        ust = new javax.swing.JComboBox<>();
+        ps = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,21 +106,20 @@ public class registrationform extends javax.swing.JFrame {
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(122, 148, -1, -1));
 
         jLabel4.setText("Username");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 201, -1, -1));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, -1, -1));
 
         jLabel5.setText("user type");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 301, -1, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, -1, -1));
 
-        ust.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
-        jPanel2.add(ust, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 298, -1, -1));
+        ut.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
+        jPanel2.add(ut, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, -1, -1));
 
         jLabel6.setText("Password");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 253, -1, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, -1, -1));
         jPanel2.add(fn, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 57, 100, -1));
         jPanel2.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 100, 100, -1));
         jPanel2.add(em, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 145, 100, -1));
-        jPanel2.add(us, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 198, 100, -1));
-        jPanel2.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 250, 100, -1));
+        jPanel2.add(us, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, 100, -1));
 
         jButton1.setText("Cancel");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -126,13 +129,20 @@ public class registrationform extends javax.swing.JFrame {
         });
         jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 336, -1, -1));
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Save");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, -1, -1));
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 330, -1, -1));
+
+        jLabel7.setText("user status");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, -1, -1));
+
+        ust.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Pending" }));
+        jPanel2.add(ust, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, -1, -1));
+        jPanel2.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 110, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,31 +169,46 @@ public class registrationform extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-           if(fn.getText().isEmpty() || ln.getText().isEmpty()||em.getText().isEmpty()||us.getText().isEmpty()
-            ||ps.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"All fields are required!");
-
-        }else if(ps.getText().length()<8){
-            JOptionPane.showMessageDialog(null,"Password should be above 8!");
+     dbConnector dbc = new dbConnector();
+        
+        
+        if(fn.getText().isEmpty() || ln.getText().isEmpty() || em.getText().isEmpty() || us.getText().isEmpty() || ps.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "All fields are required!");
+        }else if(ps.getText().length() < 8){
+            JOptionPane.showMessageDialog(null, "Password must be 8 characters and above!");
             ps.setText("");
         }else if(duplicateCheck()){
             System.out.println("Duplicate Exist");
-        }
-        else{
-
-            dbConnector dbc = new dbConnector();
-            if(dbc.insertData("INSERT INTO tbl_user"
-                +"(u_fname,u_lname,u_email,u_username,u_password,u_type,u_status)"
-                + "VALUES('"+fn.getText()+"','"+ln.getText()+"','"+em.getText()+"',"
-                        + "'"+us.getText()+"','"+ps.getText()+"','"+ust.getSelectedItem()+"','Pending') ")){
-
-            JOptionPane.showMessageDialog(null,"inserted successfully");
-            loginForm in = new loginForm();
-            in.setVisible(true);
-            this.dispose();
         }else{
-            JOptionPane.showMessageDialog(null,"inserted error");
-        }
+            try{
+                String pass = passwordhasher.hashPassword(ps.getText());
+                if(dbc.insertData("INSERT INTO tbl_user("
+                    + "u_fname,"
+                    + "u_lname,"
+                    + "u_email,"
+                    + "u_username,"
+                    + "u_password,"
+                    + "u_type,"
+                    + "u_status) VALUES ("
+                    + "'"+fn.getText()+"',"
+                    + "'"+ln.getText()+"',"
+                    + "'"+em.getText()+"',"
+                    + "'"+us.getText()+"',"
+                    + "'"+pass+"',"
+                    + "'"+ut.getSelectedItem()+"',"
+                    + "'"+ust.getSelectedItem()+"')")){
+            
+                JOptionPane.showMessageDialog(null, "Inserted Successfully");
+                loginForm lf = new loginForm();
+                lf.setVisible(true);
+                this.dispose();
+                 
+            }else{
+                JOptionPane.showMessageDialog(null, "Connection Error!");
+            }
+                }catch(NoSuchAlgorithmException ex){
+                        System.out.println(""+ex);
+                        } 
         }
     }//GEN-LAST:event_jButton3ActionPerformed
     
@@ -233,10 +258,12 @@ public class registrationform extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField ln;
-    private javax.swing.JTextField ps;
+    private javax.swing.JPasswordField ps;
     private javax.swing.JTextField us;
-    private javax.swing.JComboBox<String> ust;
+    public javax.swing.JComboBox<String> ust;
+    private javax.swing.JComboBox<String> ut;
     // End of variables declaration//GEN-END:variables
 }

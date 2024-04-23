@@ -7,7 +7,10 @@ package user;
 
 import admin.*;
 import config.Session;
+import config.dbConnector;
 import inventory.loginForm;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,7 +25,7 @@ public class userdashboard extends javax.swing.JFrame {
     public userdashboard() {
         initComponents();
     }
-
+    static String idd;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,7 +48,16 @@ public class userdashboard extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         uname = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        email = new javax.swing.JTextField();
+        name = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        id = new javax.swing.JTextField();
+        username = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -147,11 +159,41 @@ public class userdashboard extends javax.swing.JFrame {
         uname.setText("user");
         jPanel7.add(uname, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 40, 30));
 
+        jLabel8.setText("Change Pass");
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel8MouseEntered(evt);
+            }
+        });
+        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
+
         jPanel1.add(jPanel7);
         jPanel7.setBounds(0, 100, 99, 250);
 
         jPanel8.setBackground(new java.awt.Color(153, 255, 153));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel9.setText("email");
+        jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, -1));
+        jPanel8.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 170, 30));
+        jPanel8.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 170, 30));
+
+        jLabel10.setText("name");
+        jPanel8.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 30, -1));
+
+        jLabel11.setText("id");
+        jPanel8.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, -1, -1));
+
+        id.setEnabled(false);
+        jPanel8.add(id, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 170, 30));
+        jPanel8.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 170, 30));
+
+        jLabel13.setText("username");
+        jPanel8.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 160, 60, -1));
+
         jPanel1.add(jPanel8);
         jPanel8.setBounds(100, 100, 490, 250);
 
@@ -216,6 +258,30 @@ public class userdashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowActivated
 
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+      dbConnector dbc = new dbConnector();
+        try{
+            String sql = "SELECT * FROM tbl_user WHERE u_id = '"+id.getText()+"'";
+            ResultSet resultSet = dbc.getData(sql);
+            if(resultSet.next()){
+                idd = resultSet.getString("u_id");
+            }
+                changepass cp = new changepass();
+                cp.id.setText(""+idd);
+                cp.setVisible(true);
+                this.dispose();
+            
+            
+        }catch (SQLException ex) {
+            
+        }
+      
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel8MouseEntered
+
     /**
      * @param args the command line arguments
      */
@@ -253,14 +319,21 @@ public class userdashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTextField email;
+    public javax.swing.JTextField id;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -269,6 +342,8 @@ public class userdashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    public javax.swing.JTextField name;
     public javax.swing.JLabel uname;
+    public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

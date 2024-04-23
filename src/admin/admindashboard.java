@@ -62,7 +62,6 @@ public class admindashboard extends javax.swing.JFrame {
         uname = new javax.swing.JLabel();
         users = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        ulname = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -334,9 +333,6 @@ public class admindashboard extends javax.swing.JFrame {
 
         jPanel15.add(users, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 120, 140));
 
-        ulname.setText("Admin");
-        jPanel15.add(ulname, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, 50, -1));
-
         jPanel1.add(jPanel15);
         jPanel15.setBounds(0, 100, 600, 280);
 
@@ -453,7 +449,6 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JLabel ulname;
     public javax.swing.JLabel uname;
     private javax.swing.JPanel users;
     // End of variables declaration//GEN-END:variables
