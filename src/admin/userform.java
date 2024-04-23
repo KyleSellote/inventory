@@ -5,6 +5,7 @@
  */
 package admin;
 
+import config.Session;
 import config.dbConnector;
 import inventory.loginForm;
 import static inventory.loginForm.loginAcc;
@@ -137,8 +138,15 @@ public class userform extends javax.swing.JFrame {
         ut = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         ps = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        u_id = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel1.setLayout(null);
 
@@ -419,7 +427,7 @@ public class userform extends javax.swing.JFrame {
         ust.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Pending" }));
         jPanel15.add(ust, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, -1, -1));
 
-        jButton1.setText("save");
+        jButton1.setText("ADD");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
@@ -441,6 +449,12 @@ public class userform extends javax.swing.JFrame {
         jLabel18.setText("Password");
         jPanel15.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, -1, 30));
         jPanel15.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 280, 100, 30));
+
+        jLabel11.setText("Currently user");
+        jPanel15.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 360, 90, 30));
+
+        u_id.setText("id");
+        jPanel15.add(u_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, 50, 30));
 
         jPanel1.add(jPanel15);
         jPanel15.setBounds(0, 50, 650, 450);
@@ -531,7 +545,7 @@ public class userform extends javax.swing.JFrame {
             if(dbc.insertData("INSERT INTO tbl_user"
                 +"(u_fname,u_lname,u_email,u_username,u_password,u_type,u_status)"
                 + "VALUES('"+fn.getText()+"','"+ln.getText()+"','"+em.getText()+"',"
-                        + "'"+un.getText()+"','"+ps.getText()+"','"+ust.getSelectedItem()+"','Pending') ")){
+                        + "'"+un.getText()+"','"+ps.getText()+"','"+ut.getSelectedItem()+"','"+ust.getSelectedItem()+"') ")){
 
             JOptionPane.showMessageDialog(null,"inserted successfully");
             
@@ -543,6 +557,11 @@ public class userform extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       Session sees = Session.getInstance();
+       u_id.setText(""+sees.getUid());
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -590,6 +609,7 @@ public class userform extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -624,6 +644,7 @@ public class userform extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField ln;
     private javax.swing.JTextField ps;
+    private javax.swing.JLabel u_id;
     private javax.swing.JTextField uid;
     private javax.swing.JTextField un;
     private javax.swing.JTable userTables;

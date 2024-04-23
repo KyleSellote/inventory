@@ -6,6 +6,7 @@
 package user;
 
 import admin.*;
+import config.Session;
 import inventory.loginForm;
 import javax.swing.JOptionPane;
 
@@ -52,6 +53,11 @@ public class userdashboard extends javax.swing.JFrame {
         jLabel5.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel1.setLayout(null);
 
@@ -195,6 +201,20 @@ public class userdashboard extends javax.swing.JFrame {
         logg.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        Session sees = Session.getInstance();
+        if(sees.getUid()== 0 ){
+            JOptionPane.showMessageDialog(null, "No Acoount,Login First");
+            loginForm logs = new loginForm();
+            logs.setVisible(true);
+            this.dispose();
+        }else{
+        uname.setText(""+sees.getFname());
+          
+        
+        }
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
